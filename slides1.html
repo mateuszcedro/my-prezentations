@@ -9,8 +9,8 @@
 <link href="slides1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
   <meta name="generator" content="quarto-1.2.313">
 
-  <meta name="author" content="Mateusz Cedro">
-  <title>Shapley values</title>
+  <meta name="author" content=" Mateusz Cedro">
+  <title>Narratives to Explain AI Models</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -30,6 +30,7 @@
     }
   </style>
   <link rel="stylesheet" href="slides1_files/libs/revealjs/dist/theme/quarto.css" id="theme">
+  <link rel="stylesheet" href="styles.css">
   <link href="slides1_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="slides1_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="slides1_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -327,109 +328,93 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Shapley values</h1>
-  <p class="subtitle">eXplainable AI</p>
+  <h1 class="title">Narratives to Explain<br>AI Models</h1>
+  <p class="subtitle"><br>Antwerp Center on Responsible AI<br>Research Day 2025</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
 <div class="quarto-title-author-name">
-Mateusz Cedro 
+<br>Mateusz Cedro 
 </div>
 </div>
 </div>
 
-  <p class="date">1/1/22</p>
-</section>
-<section class="slide level2">
-
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
 </section>
 <section>
-<section id="paper-of-the-day" class="title-slide slide level1 center">
-<h1>Paper of the day</h1>
-<p>.reveal { font-size: 24px; line-height: 1.6!important; } code { font-size: 18px!important; line-height: 1.2!important; } pre { line-height: 1.2!important; }</p>
+<section id="model-explanations-why-should-we-care" class="title-slide slide level1 center">
+<h1>Model explanations – Why should we care?</h1>
+
 </section>
-<section id="a-unified-approach-to-interpreting-model-predictions" class="slide level2">
-<h2>A Unified Approach to Interpreting Model Predictions</h2>
-<ul>
-<li>In this course, you will learn about the main methods and tools related to XAI, but also (and this may be unique) about selected papers and researchers.</li>
-<li>That’s why we will start this and the next classes with a brief presentation of a high-impact article from the XAI field + few words about the author of this article.</li>
-<li>Today we are talking about Shapley values, so the article of the day will be the 2017 SHAP method article.</li>
-<li>It will be about the paper <a href="https://papers.nips.cc/paper/2017/hash/8a20a8621978632d76c43dfd28b67767-Abstract.html">A Unified Approach to Interpreting Model Predictions</a></li>
-</ul>
+<section id="data-models-predictions" class="slide level2">
+<h2>Data, Models, Predictions</h2>
 <p>
-<img src="images/shap_v_01.png" width="100%">
+<img src="images/the_economist.jpg" width="40%" style="float: right; margin-left: 1em; margin-bottom: 1em;">
 </p>
+<br> <br>
+<p>
+“Data is the new oil”<br> — Clive Humby, 2006
+</p>
+<br>
+<p>
+“AI is the new electricity”<br> — Andrew Ng, 2023
+</p>
+<p><br><br><br><br><br> However, not every model works as expected…</p>
+<br>
+<p>
+<img src="images/why.png" width="100%">
+</p>
+<div style="clear: both;">
+
+</div>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 2em;">
+<p>Source: Przemysław Biecek, Explainable AI course at MIM UW 2022,<br> “Why Should I Trust You?”: Explaining the Predictions of Any Classifier, (Ribeiro et al., 2016)<br> Unmasking Clever Hans predictors and assessing what machines really learn, (Lapuschkin et al., 2019) https://www.economist.com/leaders/2017/05/06/the-worlds-most-valuable-resource-is-no-longer-oil-but-data</p>
+</div>
 </section>
-<section id="shap-paper-in-numbers" class="slide level2">
-<h2>SHAP paper in numbers</h2>
+<section id="the-right-to-an-explanation-and-the-ai-act" class="slide level2">
+<h2>The right to an explanation and the AI Act</h2>
+<p><br><br></p>
 <ul>
-<li>This article is really exceptional, it will soon exceed 10,000 citations which is an amazing achievement.</li>
-<li>The article has several strong points, which we will talk about later today, one of which is the available software that allows you to easily use the described method</li>
-<li>This software is a shap library, which on GitHub has skyrocketing numbers of stars and downloads</li>
+<li>The Right to an Explanation (Recital 71 EU GDPR):</li>
 </ul>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
-</section>
-<section id="why-shap" class="slide level2">
-<h2>Why SHAP?</h2>
+<p>“The data subject should have the right […] <strong>to obtain an explanation of the decision</strong> reached after such assessment and to challenge the decision.” <br><br></p>
 <ul>
-<li>Shapley values are currently the most popular technique for model explanations (almost in each category: local, global, model agnostic, model specific…)</li>
-<li>if you remember only one method after this course, let it be the SHAP</li>
-<li>It has more than five years of development. In the list of major XAI methods, you can also find its various extensions like ShapleyFlow or ASV (more about them later)</li>
-<li>figures below are from the paper <a href="https://link.springer.com/chapter/10.1007/978-3-031-04083-2_2">Explainable AI Methods - A Brief Overview</a></li>
+<li>AI Act (2024):</li>
 </ul>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
-</section>
-<section id="xai-pyramid" class="slide level2">
-<h2>XAI pyramid</h2>
-<ul>
-<li>We will use an XAI pyramid to present new methods during this course.</li>
-<li>Today we will mainly talk about the method of local explanations - Shapley values, which for a single observation determines the importance of variables.</li>
-</ul>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
-<ul>
-<li>This is one of the three fundamental methods of explaining the behaviour of predictive models.</li>
-<li>The following three panels introduce these three concepts; we will return to them in one week and two weeks.</li>
-<li>SHAP corresponds to panel C. We try to explain the behaviour of the model by decomposing the distance between this particular prediction and the average prediction of the model.</li>
-</ul>
-<p>
-<img src="images/shap_v_01.png" width="100%">
-</p>
+<p>“The AI Act is part of a wider package of policy measures to support the development of trustworthy AI”</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 10em;">
+<p>Source: Przemysław Biecek, Explainable AI course at MIM UW 2022,<br> https://www.privacy-regulation.eu/en/recital-71-GDPR.htm,<br> https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX%3A32024R1689</p>
+</div>
 </section></section>
 <section>
-<section id="shapley-values" class="title-slide slide level1 center">
-<h1>Shapley values</h1>
+<section id="explaining-model-inspirations-from-social-sciences" class="title-slide slide level1 center">
+<h1>Explaining model – Inspirations from Social Sciences</h1>
 
 </section>
-<section id="notation" class="slide level2">
-<h2>Notation</h2>
+<section id="counterfactual-thinking-roese-1997" class="slide level2">
+<h2>Counterfactual Thinking (Roese, 1997)</h2>
+<p><br></p>
+<p>Principles of Counterfactuals:</p>
 <ul>
-<li>We have set of <span class="math inline">\(P = \{1, ..., p\}\)</span> players</li>
-<li>For each coalition, i.e.&nbsp;subset <span class="math inline">\(S \subseteq P\)</span> we can calculate the payout <span class="math inline">\(v(S)\)</span> and <span class="math inline">\(v(\{\varnothing\}) = 0\)</span></li>
-<li>We want to fairly distribute the payout <span class="math inline">\(v(P)\)</span></li>
-<li>Optimal attribution for player <span class="math inline">\(i\in P\)</span> will be denoted as <span class="math inline">\(\phi_i\)</span></li>
+<li>Counterfactual thinking is activated automatically in response to negative affect</li>
+<li>Counterfactuals are mental representations of alternatives to the past and produce consequences that are both beneficial and aversive to the individual</li>
+<li>Counterfactuals produce negative affective consequences through a contrast-effect mechanism and positive inferential consequences through a causal-inference mechanism</li>
+<li>The net effect of counterfactual thinking is beneficial.</li>
 </ul>
+<p><br><br> Roese, N. J. (1997). Counterfactual thinking. <strong>Psychological Bulletin</strong>, 121(1), 133–148. https://doi.org/10.1037/0033-2909.121.1.133</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 6em;">
+<p>Source: APA PsychNet, https://psycnet.apa.org/doiLanding?doi=10.1037%2F0033-2909.121.1.133</p>
+</div>
 </section>
-<section id="motivational-example-13" class="slide level2">
-<h2>Motivational example 1/3</h2>
-<p>How to divide the reward?</p>
+<section id="game-theoretic-foundations-shapley-1953" class="slide level2">
+<h2>Game-Theoretic Foundations (Shapley, 1953)</h2>
+<p>How to divide the reward <strong>equitably</strong>?</p>
 <ul>
 <li>Three parties A, B and C took part in the election.</li>
-<li>As a result of the election, parties A and B each have 49% representation in the parliament and party C has 2% representation.</li>
+<li>As a result of the election, parties:
+<ul>
+<li>A and B each have 49% representation in the parliament,</li>
+<li>C has 2% representation.</li>
+</ul></li>
 <li>Let’s assume that A and C formed a government.</li>
 <li>How to fairly divide the prize (ministries)?</li>
 <li>What share of the prize should party C have?</li>
@@ -438,11 +423,176 @@ Mateusz Cedro
 <p>
 <img src="images/shap_v_01.png" width="100%">
 </p>
-<p><img src="images/XAI.png" class="slide-logo"></p>
-<div class="footer footer-default">
-<p>eXplainable AI – Shapley values – MIM UW – 2022</p>
+<p>Formula for Shapley Values (Shapley, 1953) for fair payoff for player 𝑗 based on their <strong>average marginal contribution</strong>:</p>
+<p><span class="math display">\[
+\phi_j = \sum_{S \subseteq P / \{j\}}  \frac{|S|! (|P| - |S| - 1)!}{|P|!} (v(S \cup \{j\}) - v(S))
+\]</span></p>
+<p>where,</p>
+<ul>
+<li>Players and Coalitions: The set 𝑃 contains all players. The formula sums over all subsets 𝑆 that do not include player 𝑗.</li>
+<li>Marginal Contribution: 𝑣(𝑆 u {𝑗}) − 𝑣(𝑆) measures how much extra value player 𝑗 brings to the coalition 𝑆.</li>
+<li>Weighting Factor: <span class="math display">\[\frac{|S|! (|P| - |S| - 1)!}{|P|!}\]</span> a combinatorial term that accounts for all possible ways players can join a coalition in different orders.</li>
+</ul>
+<p><br></p>
+<p>The fair payoff (Shapley Values) for parties:</p>
+<ul>
+<li>A: <strong>41.167</strong> (49% of votes)</li>
+<li>B: <strong>41.167</strong> (49% of votes)</li>
+<li>C: <strong>17.667</strong> (2% of votes)</li>
+</ul>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 6em;">
+<p>Source: Przemysław Biecek, Explainable AI course at MIM UW 2022,<br> Shapley, L. (1953) A Value for n-Person Games<br> Contributions to the Theory of Games II, Princeton University Press, Princeton, 307-317.<br> https://doi.org/10.1515/9781400881970-018.</p>
 </div>
 </section></section>
+<section>
+<section id="explainable-ai-xai-in-practice" class="title-slide slide level1 center">
+<h1>eXplainable AI (XAI) in practice</h1>
+
+</section>
+<section id="counterfactual-cf-explanations" class="slide level2">
+<h2>Counterfactual (CF) explanations</h2>
+<p><em>What needs to change in your data, to change the decision?</em></p>
+<p>Example: Loan approval</p>
+<p>
+<img src="images/cf_e.png" width="100%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: NICE: An Algorithm for Nearest Instance Counterfactual Explanations,<br> Brughmans et al., 2021</p>
+</div>
+</section>
+<section id="shap-lundberg-lee-2017" class="slide level2">
+<h2>SHAP (Lundberg &amp; Lee, 2017)</h2>
+<p>Motivated by Shapley values (Shapley, 1953), SHAP treats:</p>
+<ul>
+<li>Features as players</li>
+<li>The fair payoff for each player as the feature importance</li>
+</ul>
+<p><strong>Feature importance based on Shapley values: the average marginal contribution of a feature across all possible coalitions.</strong></p>
+<br> Example: a SHAP explanation for a student predicted to fail mathematics.
+<p>
+<img src="images/shap_1.png" width="100%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: A Unified Approach to Interpreting Model Predictions (Lundberg &amp; Lee, 2017),<br> Tell Me a Story! Narrative-Driven XAI with Large Language Models (Martens et al., 2023)</p>
+</div>
+</section>
+<section id="explanation-on-graphs" class="slide level2">
+<h2>Explanation on Graphs</h2>
+<p>GNNExplainer (Ying et al., 2019) to explain Graph Neural Networks:</p>
+<ul>
+<li>Subgraph: Identifies crucial connections to neighboring nodes</li>
+<li>Feature importance: Significance of node attributes</li>
+</ul>
+<p>Example: GNNExplainer’s explanation for an NBA player (node 379) predicted to have a ‘Low Salary’.</p>
+<p>
+<img src="images/gnnexp.png" width="60%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: GNNExplainer: Generating Explanations for Graph Neural Networks (Ying et al., 2019),<br> GraphXAIN: Narratives to Explain Graph Neural Networks (Cedro &amp; Martens, 2024)</p>
+</div>
+</section></section>
+<section>
+<section id="confused" class="title-slide slide level1 center">
+<h1>Confused?</h1>
+
+</section>
+<section id="current-xai-methods" class="slide level2">
+<h2>Current XAI Methods</h2>
+<p><br> “Inmates running the asylum”<br> — Tim Miller, 2017</p>
+<ul>
+<li>AI researchers often create solutions tailored to their own needs rather than those of non-expert users (Miller, 2017)</li>
+<li>“There is thus a gap between explainability in practice and the goal of transparency, since explanations primarily serve internal stakeholders rather than external ones.” (Bhatt et al., 2020)</li>
+</ul>
+</section></section>
+<section>
+<section id="what-is-a-good-explanation" class="title-slide slide level1 center">
+<h1>What Is a “Good” Explanation?</h1>
+
+</section>
+<section id="social-sciences-once-again" class="slide level2">
+<h2>Social sciences once again</h2>
+<p><br></p>
+<ul>
+<li>Computer-generated results should be <strong>directly interpretable in natural language</strong> (Michalski, 1983)</li>
+<li>Effective explanations <strong>should enhance the alignment between the user’s mental model and AI model</strong> (Kayande et al., 2009)</li>
+</ul>
+</section>
+<section id="solution-narratives" class="slide level2">
+<h2>Solution: Narratives!</h2>
+<p>
+<img src="images/communicate.png" width="80%">
+</p>
+<p>
+<img src="images/communicate2.png" width="65%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: Using narratives and storytelling to communicate science with nonexperts audiences (Dahlstron, 2014),<br> How narrative functions in entertainment to communicate science (Kaplan &amp; Dahlstron, 2017)</p>
+</div>
+</section></section>
+<section>
+<section id="xai-narratives" class="title-slide slide level1 center">
+<h1>XAI Narratives</h1>
+
+</section>
+<section id="cfstories" class="slide level2">
+<h2>CFstories</h2>
+<p>Tell Me a Story! Narrative-Driven XAI with Large Language Models (Martens et al., 2023)</p>
+<p>
+<img src="images/cfstory.png" width="75%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: Tell Me a Story! Narrative-Driven XAI with Large Language Models (Martens et al., 2023)</p>
+</div>
+</section>
+<section id="shapstories" class="slide level2">
+<h2>SHAPstories</h2>
+<p>
+<img src="images/shapstory.png" width="80%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: Tell Me a Story! Narrative-Driven XAI with Large Language Models (Martens et al., 2023)</p>
+</div>
+</section>
+<section id="graphxain" class="slide level2">
+<h2>GraphXAIN</h2>
+<p>GraphXAIN: Narratives to Explain Graph Neural Networks (Cedro &amp; Martens, 2024)</p>
+<p>
+<img src="images/graphxain_prez.png" width="100%">
+</p>
+<div style="font-size: 0.8em; color: gray; text-align: center; margin-top: 3em;">
+<p>Source: GraphXAIN: Narratives to Explain Graph Neural Networks (Cedro &amp; Martens, 2024)</p>
+</div>
+</section>
+<section id="evaluation-of-xai-narratives" class="slide level2">
+<h2>Evaluation of XAI Narratives</h2>
+<ul>
+<li>CF- and SHAPstories (Martens et al., 2023)
+<p>
+<img src="images/xaistories.png" width="90%">
+</p></li>
+<li>GraphXAIN (Cedro &amp; Martens, 2024)
+<p>
+<img src="images/xain_res.png" width="80%">
+</p></li>
+</ul>
+</section></section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion:</h1>
+<h2>
+<strong>Narratives – A Crucial Addition to Explainable AI</strong>
+</h2>
+</section>
+
+<section id="thank-you" class="title-slide slide level1 center">
+<h1>Thank you!</h1>
+<h3>
+Happy to answer your questions!
+</h3><h3>
+<p><img src="images/ua_logo.jpg" class="slide-logo"></p>
+<div class="footer footer-default">
+<p>XAI Narratives – Mateusz Cedro – ACRAI Research Day 2025</p>
+</div>
+</h3></section>
     </div>
   </div>
 

@@ -1,0 +1,13 @@
+.reveal {
+    font-size: 24px;
+    line-height: 1.6 !important;
+}
+
+code {
+    font-size: 18px !important;
+    line-height: 1.2 !important;
+}
+
+pre {
+    line-height: 1.2 !important;
+}
